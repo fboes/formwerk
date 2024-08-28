@@ -1,0 +1,34 @@
+body {
+  font-family: Arial, Helvetica, sans-serif;
+}
+section {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1em;
+  align-items: flex-start;
+}
+section > * {
+  flex: 1 0 16em;
+}
+.formwerk--outer {
+  padding: 0.5em;
+  border-radius: 0.25em;
+  border: 1px solid rgba(0, 0, 0, 0.25);
+}
+textarea,
+input,
+select {
+  font: inherit;
+}
+.formwerk .form-check-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25em 0.25em;
+  margin-block-start: 0.25em;
+}
+.formwerk .form-check-group > * {
+  flex: 0 0 10em;
+}
+.formwerk .form-control {
+  border: none;
+}

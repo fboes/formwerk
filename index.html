@@ -1,0 +1,213 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Formwerk Demonstration Page</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <link rel="stylesheet" href="dist/formwerk.css" />
+    <link rel="stylesheet" href="./demo.css" />
+    <!--link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous" -->
+    <script type="module">
+      import "./dist/formwerk.js";
+    </script>
+  </head>
+  <body>
+    <h1>Formwerk Demonstration Page</h1>
+
+    <h2><code>&lt;formwerk-input /&gt;</code></h2>
+    <section>
+      <formwerk-input
+        label="IBAN"
+        name="four-digits"
+        placeholder="DE00 …"
+        required="required"
+        helptext="This field requires a valid IBAN, and will react accordingly to invalid inputs."
+        pattern="([A-Za-z]{2}[0-9]{2})(\s?[A-Za-z0-9]{4}){3,}(\s?[A-Za-z0-9]{1,4})"
+      ></formwerk-input>
+
+      <formwerk-input label="Date" name="date" type="date" helptext="A simple date picker"></formwerk-input>
+
+      <formwerk-input label="Time" name="time" type="time" helptext="A simple time picker"></formwerk-input>
+
+      <formwerk-input
+        label="Image upload"
+        accept="image/*"
+        name="file"
+        type="file"
+        helptext="Image upload field"
+        capture="environment"
+      ></formwerk-input>
+
+      <formwerk-input
+        label="Password"
+        name="password"
+        type="password"
+        helptext="A simple password input, minimum length 8 characters, no white spaces allowed"
+        required="required"
+        pattern="\S{8,}"
+        toggletype='{
+          "type": "text",
+          "labelOff": "⇄",
+          "labelOn": "⇆",
+          "title": "Show / hide password"
+        }'
+      ></formwerk-input>
+
+      <formwerk-input label="Color" name="color" type="color" helptext="A simple color picker"></formwerk-input>
+
+      <formwerk-input
+        label="Email"
+        name="email"
+        type="email"
+        helptext="A simple email input field"
+        placeholder="info@example.com"
+      ></formwerk-input>
+
+      <formwerk-input
+        label="Temperature"
+        name="temperature"
+        unit="°C"
+        type="number"
+        placeholder="21"
+        min="-40"
+        max="40"
+        helptext="Number type, width additional unit attached"
+      ></formwerk-input>
+
+      <formwerk-input
+        label="Temperature range"
+        name="temperature-range"
+        id="tr"
+        output="true"
+        value="21"
+        type="range"
+        unit="°C"
+        min="-40"
+        max="40"
+        required="required"
+        helptext="Range slider with additional output"
+      ></formwerk-input>
+
+      <formwerk-input
+        label="Temperature range"
+        name="temperature-range-datalist"
+        id="tr"
+        output="true"
+        value="21"
+        type="range"
+        unit="°C"
+        min="-40"
+        max="40"
+        required="required"
+        helptext="Range slider with additional output and datalist"
+        options='["-40", "-20", "0", "20", "40"]'
+      ></formwerk-input>
+
+      <formwerk-input
+        label="Colors"
+        name="colors-input"
+        value="yellow"
+        options='[
+  {"value":"blue", "label":"Color blue"},
+  {"value":"red", "label":"Color red"},
+  {"value":"yellow", "label":"Color yellow"}]'
+        helptext="Input field with datalist"
+      ></formwerk-input>
+    </section>
+
+    <h2><code>&lt;formwerk-select /&gt;</code></h2>
+    <section>
+      <formwerk-select
+        label="Brand"
+        name="brand-select"
+        required="required"
+        options='["Android","iOS","Other"]'
+        helptext="Simple select with required value"
+      ></formwerk-select>
+
+      <formwerk-select
+        label="Colors"
+        name="colors-select"
+        value="Yellow"
+        options='["Blue","Red","Yellow"]'
+        helptext="Simple select with default value"
+      ></formwerk-select>
+
+      <formwerk-select
+        label="Numbers"
+        name="numbers"
+        value="1"
+        options='[
+      {"value":"1", "label":"One"},
+      {"value":"2", "label":"Two"},
+      {"value":"3", "label":"Three"}]'
+        output="true"
+        helptext="Select with key:value options and output"
+      ></formwerk-select>
+
+      <formwerk-select
+        label="Toppings"
+        name="toppings"
+        multiple="multiple"
+        values='["Onion", "Potato"]'
+        options='["Onion", "Tomato", "Potato", "Broccoli"]'
+        helptext="A multiple select output, with multiple initial values"
+      ></formwerk-select>
+    </section>
+
+    <h2><code>&lt;formwerk-checkboxes /&gt;</code></h2>
+    <section>
+      <formwerk-checkboxes
+        label="Colors"
+        name="colors-checkboxes"
+        type="radio"
+        value="Yellow"
+        options='["Blue","Red","Yellow"]'
+        helptext="Simple checkboxes"
+        required="required"
+      ></formwerk-checkboxes>
+
+      <formwerk-checkboxes
+        label="Numbers"
+        name="numbers"
+        value="1"
+        options='[
+    {"value":"1", "label":"One"},
+    {"value":"2", "label":"Two"},
+    {"value":"3", "label":"Three"}]'
+        type="radio"
+        output="true"
+        helptext="Radio buttons with key:value options and output"
+      ></formwerk-checkboxes>
+
+      <formwerk-checkboxes
+        label="Toppings"
+        name="toppings-checkboxes"
+        type="checkbox"
+        values='["Onion", "Potato"]'
+        options='["Onion", "Tomato", "Potato", "Broccoli"]'
+        helptext="A set of checkboxes output, with multiple initial values"
+      ></formwerk-checkboxes>
+    </section>
+
+    <h2><code>&lt;formwerk-textarea /&gt;</code></h2>
+    <section>
+      <formwerk-textarea
+        label="Textarea"
+        name="textarea"
+        value="Lorem ipsum…"
+        required="required"
+        helptext="A regular textarea"
+      ></formwerk-textarea>
+
+      <formwerk-textarea
+        label="Textarea"
+        name="textarea"
+        placeholder="Lorem ipsum…"
+        required="required"
+        helptext="An auto-growing textarea"
+        autogrow="true"
+      ></formwerk-textarea>
+    </section>
+  </body>
+</html>
