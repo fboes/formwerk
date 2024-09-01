@@ -50,6 +50,8 @@ Write the Formwerk web components tags into your HTML.
 
 Refer to the [Formwerk examples page](https://fboes.github.io/formwerk/example/) on live examples as well as their code examples.
 
+Be aware that changing the attributes of the web components after mounting these to the DOM does not apply any further changes. Instead change the _properties_ of the web components.
+
 ## Attributes
 
 These additional attributes exists on the Formwerk web components:

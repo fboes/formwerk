@@ -21,6 +21,6 @@ export default [
     files: ["**/*.ts"],
     plugins: {
       jsdoc,
-    }
+    },
   },
 ];

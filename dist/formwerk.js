@@ -16,10 +16,12 @@ const _html = (html) => {
 // -----------------------------------------------------------------------------
 export class FormwerkElement extends HTMLElement {
     constructor() {
-        super();
+        super(...arguments);
         this._values = [];
         this._options = [];
         this.input = document.createElement("input");
+    }
+    connectedCallback() {
         const options = this.getAttribute("options");
         const values = this.getAttribute("values");
         if (options || values) {
@@ -51,7 +53,11 @@ export class FormwerkElement extends HTMLElement {
 // -----------------------------------------------------------------------------
 export class FormwerkInput extends FormwerkElement {
     constructor() {
-        super();
+        super(...arguments);
+        this.output = null;
+    }
+    connectedCallback() {
+        super.connectedCallback();
         this._addHtml();
         this.input = this.querySelector("input, select, textarea");
         this.output = this.querySelector("output");
@@ -205,7 +211,11 @@ customElements.define("formwerk-select", FormwerkSelect);
 // -----------------------------------------------------------------------------
 export class FormwerkCheckboxes extends FormwerkElement {
     constructor() {
-        super();
+        super(...arguments);
+        this.formGroup = null;
+    }
+    connectedCallback() {
+        super.connectedCallback();
         this._addHtml();
         this.formGroup = this.querySelector('[role="group"]');
         if (this.hasAttributes()) {
@@ -248,6 +258,9 @@ export class FormwerkCheckboxes extends FormwerkElement {
         this.classList.toggle("is-required", this.input.hasAttribute("required"));
     }
     drawOptions() {
+        if (!this.formGroup) {
+            return;
+        }
         this.formGroup.innerHTML = this._options
             .map((option, index) => {
             if (typeof option === "string") {
@@ -270,8 +283,8 @@ export class FormwerkCheckboxes extends FormwerkElement {
 customElements.define("formwerk-checkboxes", FormwerkCheckboxes);
 // -----------------------------------------------------------------------------
 export class FormwerkTextarea extends FormwerkInput {
-    constructor() {
-        super();
+    connectedCallback() {
+        super.connectedCallback();
         if (this.getAttribute("autogrow")) {
             this.input.style.overflow = "hidden";
             this._autogrow();

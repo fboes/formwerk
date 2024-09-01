@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.0.3
+
+- Moved as much as possible to `connectedCallback`
+
+## 1.0.2
+
 - Fixed example URL in documentation
 
 ## 1.0.1

@@ -33,8 +33,7 @@ export class FormwerkElement extends HTMLElement {
 
   input: HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement = document.createElement("input");
 
-  constructor() {
-    super();
+  connectedCallback() {
     const options = this.getAttribute("options");
     const values = this.getAttribute("values");
     if (options || values) {
@@ -71,10 +70,10 @@ export class FormwerkElement extends HTMLElement {
 // -----------------------------------------------------------------------------
 
 export class FormwerkInput extends FormwerkElement {
-  output: HTMLOutputElement | null;
+  output: HTMLOutputElement | null = null;
 
-  constructor() {
-    super();
+  connectedCallback() {
+    super.connectedCallback();
     this._addHtml();
     this.input = this.querySelector("input, select, textarea") as
       | HTMLInputElement
@@ -258,10 +257,10 @@ customElements.define("formwerk-select", FormwerkSelect);
 // -----------------------------------------------------------------------------
 
 export class FormwerkCheckboxes extends FormwerkElement {
-  formGroup: HTMLDivElement;
+  formGroup: HTMLDivElement | null = null;
 
-  constructor() {
-    super();
+  connectedCallback() {
+    super.connectedCallback();
     this._addHtml();
     this.formGroup = this.querySelector('[role="group"]') as HTMLDivElement;
 
@@ -314,6 +313,9 @@ export class FormwerkCheckboxes extends FormwerkElement {
   }
 
   drawOptions() {
+    if (!this.formGroup) {
+      return;
+    }
     this.formGroup.innerHTML = this._options
       .map((option: FormwerkOption, index: number) => {
         if (typeof option === "string") {
@@ -342,8 +344,8 @@ customElements.define("formwerk-checkboxes", FormwerkCheckboxes);
 // -----------------------------------------------------------------------------
 
 export class FormwerkTextarea extends FormwerkInput {
-  constructor() {
-    super();
+  connectedCallback() {
+    super.connectedCallback();
 
     if (this.getAttribute("autogrow")) {
       this.input.style.overflow = "hidden";

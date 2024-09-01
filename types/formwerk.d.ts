@@ -7,7 +7,7 @@ export declare class FormwerkElement extends HTMLElement {
     protected _values: FormwerkValue[];
     protected _options: FormwerkOption[];
     input: HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement;
-    constructor();
+    connectedCallback(): void;
     set options(options: FormwerkOption[]);
     get options(): FormwerkOption[];
     set values(values: FormwerkValue[]);
@@ -15,7 +15,7 @@ export declare class FormwerkElement extends HTMLElement {
 }
 export declare class FormwerkInput extends FormwerkElement {
     output: HTMLOutputElement | null;
-    constructor();
+    connectedCallback(): void;
     protected _addToggleButton(): void;
     protected _addHtml(): void;
     protected _syncOutput(): void;
@@ -28,14 +28,14 @@ export declare class FormwerkSelect extends FormwerkInput {
     drawOptions(): void;
 }
 export declare class FormwerkCheckboxes extends FormwerkElement {
-    formGroup: HTMLDivElement;
-    constructor();
+    formGroup: HTMLDivElement | null;
+    connectedCallback(): void;
     protected _addHtml(): void;
     protected _syncAttributes(): void;
     drawOptions(): void;
 }
 export declare class FormwerkTextarea extends FormwerkInput {
-    constructor();
+    connectedCallback(): void;
     protected _autogrow(): void;
     protected _addHtml(): void;
 }
