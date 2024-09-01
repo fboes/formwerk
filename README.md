@@ -48,7 +48,7 @@ Write the Formwerk web components tags into your HTML.
 <formwerk-input label="Example" name="example" helptext="This is an example text field"></formwerk-input>
 ```
 
-Refer to the [Formwerk examples page](/examples/) on live examples as well as their code examples.
+Refer to the [Formwerk examples page](https://fboes.github.io/formwerk/example/) on live examples as well as their code examples.
 
 ## Attributes
 
