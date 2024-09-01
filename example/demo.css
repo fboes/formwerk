@@ -1,6 +1,16 @@
 body {
   font-family: Arial, Helvetica, sans-serif;
 }
+h1,
+h2 {
+  text-align: center;
+}
+h1 {
+  border-bottom: 1px solid;
+}
+h2 {
+  margin-top: 2em;
+}
 section {
   display: flex;
   flex-wrap: wrap;
@@ -19,6 +29,8 @@ textarea,
 input,
 select {
   font: inherit;
+  background: transparent;
+  color: inherit;
 }
 .formwerk .form-check-group {
   display: flex;
@@ -31,4 +43,14 @@ select {
 }
 .formwerk .form-control {
   border: none;
+}
+
+@media (prefers-color-scheme: dark) {
+  body {
+    background: black;
+    color: white;
+  }
+  .formwerk--outer {
+    border: 1px solid rgba(255, 255, 255, 0.25);
+  }
 }

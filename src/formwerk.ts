@@ -9,15 +9,73 @@ type FormwerkOption = string | { value: string; label: string };
 
 type FormwerkValue = string;
 
-export class FormwerkInput extends HTMLElement {
-  _values: FormwerkValue[];
-  input: HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement;
+const _html = (html: string): string => {
+  return html.replace(/[<>&"]/, (match: string): string => {
+    switch (match) {
+      case "<":
+        return "&lt;";
+      case ">":
+        return "&gt;";
+      case "&":
+        return "&amp;";
+      case '"':
+        return "&quot;";
+    }
+    return match;
+  });
+};
+
+// -----------------------------------------------------------------------------
+
+export class FormwerkElement extends HTMLElement {
+  protected _values: FormwerkValue[] = [];
+  protected _options: FormwerkOption[] = [];
+
+  input: HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement = document.createElement("input");
+
+  constructor() {
+    super();
+    const options = this.getAttribute("options");
+    const values = this.getAttribute("values");
+    if (options || values) {
+      this.options = JSON.parse(options ?? "[]");
+      this.values = JSON.parse(values ?? "[]");
+    }
+  }
+
+  set options(options: FormwerkOption[]) {
+    this._options = options;
+  }
+
+  get options(): FormwerkOption[] {
+    return this._options;
+  }
+
+  set values(values: FormwerkValue[]) {
+    this._values = values || [this.input.value];
+    this.input.value = values[0] ?? "";
+  }
+
+  get values(): FormwerkValue[] {
+    const checked = this.querySelectorAll(":checked") as NodeListOf<HTMLOptionElement>;
+    return checked.length
+      ? [...checked].map((o: HTMLOptionElement) => {
+          return o.value;
+        })
+      : this.input.value !== ""
+        ? [this.input.value]
+        : [];
+  }
+}
+
+// -----------------------------------------------------------------------------
+
+export class FormwerkInput extends FormwerkElement {
   output: HTMLOutputElement | null;
 
   constructor() {
     super();
     this._addHtml();
-    this._values = [];
     this.input = this.querySelector("input, select, textarea") as
       | HTMLInputElement
       | HTMLSelectElement
@@ -32,12 +90,10 @@ export class FormwerkInput extends HTMLElement {
           case "output":
           case "helptext":
           case "unit":
-          case "options":
           case "autogrow":
           case "toggletype":
-            break;
+          case "options":
           case "values":
-            this._values = JSON.parse(attribute.value ?? "[]");
             break;
           case "value":
             this.input.value = attribute.value;
@@ -48,11 +104,27 @@ export class FormwerkInput extends HTMLElement {
       }
     }
 
-    const type = this.getAttribute("type");
-    if (type !== "checkbox" && type !== "radio") {
-      this.input.classList.add("form-control");
+    this.classList.add("formwerk");
+    this.input.classList.add("form-control");
+    if (this._options || this._values) {
+      this.drawOptions();
     }
+    if (this.output) {
+      this._syncOutput();
+    }
+    this._addToggleButton();
+    this._syncValidity();
+    this._syncAttributes();
 
+    this.input.addEventListener("input", () => {
+      if (this.output) {
+        this._syncOutput();
+      }
+      this._syncValidity();
+    });
+  }
+
+  protected _addToggleButton() {
     const toggletypeAttribute = this.getAttribute("toggletype");
     if (toggletypeAttribute) {
       const toggletype: FormwerkTypeToggle = JSON.parse(toggletypeAttribute);
@@ -65,22 +137,6 @@ export class FormwerkInput extends HTMLElement {
         );
       });
     }
-
-    this.classList.add("formwerk");
-    this.options = JSON.parse(this.getAttribute("options") ?? "[]");
-
-    if (this.output) {
-      this._syncOutput();
-    }
-    this._syncValidity();
-    this._syncAttributes();
-
-    this.input.addEventListener("input", () => {
-      if (this.output) {
-        this._syncOutput();
-      }
-      this._syncValidity();
-    });
   }
 
   protected _addHtml() {
@@ -99,21 +155,21 @@ export class FormwerkInput extends HTMLElement {
 
     this.innerHTML =
       `<div class="formwerk--outer">` +
-      (label ? `<label for="${id}--input" class="form-label">${label}</label>` : "") +
-      `<div class="formwerk--input"><input id="${id}--input" type="text"${
-        (helptext ? ` aria-describedby="${id}--helptext"` : "") +
-        (datalist ? ` list="${id}--datalist"` : "") +
-        (unit ? ` aria-label="${label ?? ""} (${unit})"` : "")
+      (label ? `<label for="${_html(id)}--input" class="form-label">${_html(label)}</label>` : "") +
+      `<div class="formwerk--input"><input id="${_html(id)}--input" type="text"${
+        (helptext ? ` aria-describedby="${_html(id)}--helptext"` : "") +
+        (datalist ? ` list="${_html(id)}--datalist"` : "") +
+        (unit ? ` aria-label="${_html(label ?? "")} (${_html(unit)})"` : "")
       } />` +
-      (output ? `<output id="${id}--input"></output>` : "") +
-      (unit ? `<span aria-hidden="true">${unit}</span>` : "") +
+      (output ? `<output id="${_html(id)}--input"></output>` : "") +
+      (unit ? `<span aria-hidden="true">${_html(unit)}</span>` : "") +
       (toggletype
-        ? `<button type="button" class="toggle-type" title="${toggletype.title}">${toggletype.labelOff}</button>`
+        ? `<button type="button" class="toggle-type" title="${_html(toggletype.title ?? "")}">${_html(toggletype.labelOff)}</button>`
         : "") +
-      (datalist ? `<datalist id="${id}--datalist"></datalist>` : "") +
+      (datalist ? `<datalist id="${_html(id)}--datalist"></datalist>` : "") +
       `</div>` +
       `</div>` +
-      (helptext ? `<small id="${id}--helptext" class="form-text">${helptext}</small>` : "");
+      (helptext ? `<small id="${_html(id)}--helptext" class="form-text">${_html(helptext)}</small>` : "");
   }
 
   protected _syncOutput() {
@@ -131,12 +187,12 @@ export class FormwerkInput extends HTMLElement {
     this.classList.toggle("is-invalid-empty", !this.input.checkValidity());
   }
 
-  set options(options: FormwerkOption[]) {
+  drawOptions() {
     const datalist = this.querySelector("datalist");
     if (!datalist) {
       return;
     }
-    datalist.innerHTML = options
+    datalist.innerHTML = this._options
       .map((option: FormwerkOption) => {
         if (typeof option === "string") {
           option = {
@@ -144,9 +200,9 @@ export class FormwerkInput extends HTMLElement {
             label: option,
           };
         }
-        return `<option value="${option.value}">${option.label}</option>`;
+        return `<option value="${_html(option.value)}">${_html(option.label)}</option>`;
       })
-      .join();
+      .join("");
   }
 }
 
@@ -155,19 +211,6 @@ customElements.define("formwerk-input", FormwerkInput);
 // -----------------------------------------------------------------------------
 
 export class FormwerkSelect extends FormwerkInput {
-  constructor() {
-    super();
-
-    this.input.addEventListener("change", () => {
-      if (!(this.input instanceof HTMLSelectElement)) {
-        return;
-      }
-      this._values = Array.from(this.input.selectedOptions).map((option) => {
-        return option.getAttribute("value") || option.innerText;
-      });
-    });
-  }
-
   protected _addHtml() {
     const label = this.getAttribute("label");
     const output = this.getAttribute("output");
@@ -180,21 +223,20 @@ export class FormwerkSelect extends FormwerkInput {
 
     this.innerHTML =
       `<div class="formwerk--outer">` +
-      (label ? `<label for="${id}--input" class="form-label">${label}</label>` : "") +
-      `<div class="formwerk--input"><select id="${id}--input"${
-        (helptext ? ` aria-describedby="${id}--helptext"` : "") + (unit ? ` aria-label="${label ?? ""} (${unit})"` : "")
+      (label ? `<label for="${_html(id)}--input" class="form-label">${_html(label)}</label>` : "") +
+      `<div class="formwerk--input"><select id="${_html(id)}--input"${
+        (helptext ? ` aria-describedby="${_html(id)}--helptext"` : "") +
+        (unit ? ` aria-label="${_html(label ?? "")} (${_html(unit)})"` : "")
       }></select>` +
-      (output ? `<output id="${id}--input"></output>` : "") +
-      (unit ? `<span aria-hidden="true">${unit}</span>` : "") +
+      (output ? `<output id="${_html(id)}--input"></output>` : "") +
+      (unit ? `<span aria-hidden="true">${_html(unit)}</span>` : "") +
       `</div>` +
       `</div>` +
-      (helptext ? `<small id="${id}--helptext" class="form-text">${helptext}</small>` : "");
+      (helptext ? `<small id="${_html(id)}--helptext" class="form-text">${_html(helptext)}</small>` : "");
   }
 
-  set options(options: FormwerkOption[]) {
-    const values = this._values.length ? this._values : [this.input.value || this.getAttribute("value")];
-
-    this.input.innerHTML = options
+  drawOptions() {
+    this.input.innerHTML = this._options
       .map((option: FormwerkOption) => {
         if (typeof option === "string") {
           option = {
@@ -202,9 +244,10 @@ export class FormwerkSelect extends FormwerkInput {
             label: option,
           };
         }
-        return `<option value="${option.value}"${values.indexOf(option.value) !== -1 ? ' selected="selected"' : ""}>${
-          option.label
-        }</option>`;
+        const selected = this._values.indexOf(option.value) !== -1 || this.input.value === option.value;
+        return `<option value="${_html(option.value)}"${selected ? ' selected="selected"' : ""}>${_html(
+          option.label,
+        )}</option>`;
       })
       .join("");
   }
@@ -214,16 +257,12 @@ customElements.define("formwerk-select", FormwerkSelect);
 
 // -----------------------------------------------------------------------------
 
-export class FormwerkCheckboxes extends HTMLElement {
-  _values: FormwerkValue[];
-  input: HTMLInputElement;
+export class FormwerkCheckboxes extends FormwerkElement {
   formGroup: HTMLDivElement;
 
   constructor() {
     super();
     this._addHtml();
-    this._values = [];
-    this.input = document.createElement("input");
     this.formGroup = this.querySelector('[role="group"]') as HTMLDivElement;
 
     if (this.hasAttributes()) {
@@ -233,9 +272,7 @@ export class FormwerkCheckboxes extends HTMLElement {
           case "helptext":
           case "options":
           case "required":
-            break;
           case "values":
-            this._values = JSON.parse(attribute.value ?? "[]");
             break;
           case "value":
             this.input.value = attribute.value;
@@ -247,17 +284,9 @@ export class FormwerkCheckboxes extends HTMLElement {
     }
 
     this.input.classList.add("form-check-input");
+    this.drawOptions();
 
     this.classList.add("formwerk");
-    this.options = JSON.parse(this.getAttribute("options") ?? "[]");
-
-    this.formGroup.addEventListener("change", () => {
-      this._values = (Array.from(this.formGroup.querySelectorAll("input:checked")) as HTMLInputElement[]).map(
-        (option): FormwerkValue => {
-          return option.getAttribute("value") || option.innerText;
-        },
-      );
-    });
 
     this._syncAttributes();
   }
@@ -272,22 +301,20 @@ export class FormwerkCheckboxes extends HTMLElement {
 
     this.innerHTML =
       `<div class="formwerk--outer">` +
-      (label ? `<div id="${id}--label" class="form-label">${label}</div>` : "") +
-      `<div class="form-check-group" role="group" id="${id}--input" aria-labelledby="${id}--label"${
-        helptext ? ` aria-describedby="${id}--helptext"` : ""
+      (label ? `<div id="${_html(id)}--label" class="form-label">${_html(label)}</div>` : "") +
+      `<div class="form-check-group" role="group" id="${_html(id)}--input" aria-labelledby="${_html(id)}--label"${
+        helptext ? ` aria-describedby="${_html(id)}--helptext"` : ""
       }></div>` +
       `</div>` +
-      (helptext ? `<small id="${id}--helptext" class="form-text">${helptext}</small>` : "");
+      (helptext ? `<small id="${_html(id)}--helptext" class="form-text">${_html(helptext)}</small>` : "");
   }
 
   protected _syncAttributes() {
     this.classList.toggle("is-required", this.input.hasAttribute("required"));
   }
 
-  set options(options: FormwerkOption[]) {
-    const values = this._values.length ? this._values : [this.input.value || this.getAttribute("value")];
-
-    this.formGroup.innerHTML = options
+  drawOptions() {
+    this.formGroup.innerHTML = this._options
       .map((option: FormwerkOption, index: number) => {
         if (typeof option === "string") {
           option = {
@@ -298,11 +325,13 @@ export class FormwerkCheckboxes extends HTMLElement {
 
         const input = this.input.cloneNode(true) as HTMLInputElement;
         const id = input.id + `--${index}`;
+        const checked = this._values.indexOf(option.value) !== -1 || this.input.value === option.value;
+
         input.setAttribute("value", option.value);
         input.setAttribute("id", id);
-        input.toggleAttribute("checked", values.indexOf(option.value) !== -1);
+        input.toggleAttribute("checked", checked);
 
-        return `<div class="form-check">${input.outerHTML}<label class="form-check-label" for="${id}">${option.label}</label></div>`;
+        return `<div class="form-check">${input.outerHTML}<label class="form-check-label" for="${_html(id)}">${_html(option.label)}</label></div>`;
       })
       .join("");
   }
@@ -343,15 +372,16 @@ export class FormwerkTextarea extends FormwerkInput {
 
     this.innerHTML =
       `<div class="formwerk--outer">` +
-      (label ? `<label for="${id}--input" class="form-label">${label}</label>` : "") +
-      `<div class="formwerk--input"><textarea id="${id}--input" ${
-        (helptext ? ` aria-describedby="${id}--helptext"` : "") + (unit ? ` aria-label="${label ?? ""} (${unit})"` : "")
+      (label ? `<label for="${_html(id)}--input" class="form-label">${_html(label)}</label>` : "") +
+      `<div class="formwerk--input"><textarea id="${_html(id)}--input" ${
+        (helptext ? ` aria-describedby="${_html(id)}--helptext"` : "") +
+        (unit ? ` aria-label="${_html(label ?? "")} (${_html(unit)})"` : "")
       }></textarea>` +
-      (output ? `<output id="${id}--input"></output>` : "") +
-      (unit ? `<span aria-hidden="true">${unit}</span>` : "") +
+      (output ? `<output id="${_html(id)}--input"></output>` : "") +
+      (unit ? `<span aria-hidden="true">${_html(unit)}</span>` : "") +
       `</div>` +
       `</div>` +
-      (helptext ? `<small id="${id}--helptext" class="form-text">${helptext}</small>` : "");
+      (helptext ? `<small id="${_html(id)}--helptext" class="form-text">${_html(helptext)}</small>` : "");
   }
 }
 

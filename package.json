@@ -1,7 +1,7 @@
 {
   "name": "@fboes/formwerk",
-  "version": "1.0.0",
-  "description": "Web components for smarter HTML forms.",
+  "version": "1.0.1",
+  "description": "Web components for improved HTML form elements.",
   "main": "dist/formwerk.js",
   "scripts": {
     "test": "node ./dist/formwerk.test.js",
