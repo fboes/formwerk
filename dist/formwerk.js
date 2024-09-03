@@ -1,3 +1,8 @@
+/**
+ * Properly quote HTML
+ * @param html probably HTML
+ * @returns definitly not HTML
+ */
 const _html = (html) => {
     return html.replace(/[<>&"]/, (match) => {
         switch (match) {
@@ -14,6 +19,9 @@ const _html = (html) => {
     });
 };
 // -----------------------------------------------------------------------------
+/**
+ * Base class for all Formwerk Web Components.
+ */
 export class FormwerkElement extends HTMLElement {
     constructor() {
         super(...arguments);
@@ -22,6 +30,8 @@ export class FormwerkElement extends HTMLElement {
         this.input = document.createElement("input");
     }
     connectedCallback() {
+        this.disabled = this.hasAttribute("disabled");
+        this.required = this.hasAttribute("required");
         const options = this.getAttribute("options");
         const values = this.getAttribute("values");
         if (options || values) {
@@ -49,8 +59,20 @@ export class FormwerkElement extends HTMLElement {
                 ? [this.input.value]
                 : [];
     }
+    set required(required) {
+        this.input.toggleAttribute("required", required);
+        this.classList.toggle("is-required", required);
+    }
+    set disabled(disabled) {
+        this.input.toggleAttribute("disabled", disabled);
+        this.classList.toggle("is-disabled", disabled);
+    }
 }
 // -----------------------------------------------------------------------------
+/**
+ * Creates an enhanced `<input>`
+ * @see https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input
+ */
 export class FormwerkInput extends FormwerkElement {
     constructor() {
         super(...arguments);
@@ -92,7 +114,6 @@ export class FormwerkInput extends FormwerkElement {
         }
         this._addToggleButton();
         this._syncValidity();
-        this._syncAttributes();
         this.input.addEventListener("input", () => {
             if (this.output) {
                 this._syncOutput();
@@ -144,9 +165,6 @@ export class FormwerkInput extends FormwerkElement {
             this.output.value = this.input.value ?? "";
         }
     }
-    _syncAttributes() {
-        this.classList.toggle("is-required", this.input.hasAttribute("required"));
-    }
     _syncValidity() {
         this.classList.toggle("is-invalid", this.input.value !== "" && !this.input.checkValidity());
         this.classList.toggle("is-invalid-empty", !this.input.checkValidity());
@@ -171,6 +189,10 @@ export class FormwerkInput extends FormwerkElement {
 }
 customElements.define("formwerk-input", FormwerkInput);
 // -----------------------------------------------------------------------------
+/**
+ * Creates an enhanced `<select>`
+ * @see https://developer.mozilla.org/en-US/docs/Web/HTML/Element/select
+ */
 export class FormwerkSelect extends FormwerkInput {
     _addHtml() {
         const label = this.getAttribute("label");
@@ -209,6 +231,10 @@ export class FormwerkSelect extends FormwerkInput {
 }
 customElements.define("formwerk-select", FormwerkSelect);
 // -----------------------------------------------------------------------------
+/**
+ * Creates an enhanced `<input type="checkbox">` or `<input type="radio">`
+ * @see https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input
+ */
 export class FormwerkCheckboxes extends FormwerkElement {
     constructor() {
         super(...arguments);
@@ -238,7 +264,6 @@ export class FormwerkCheckboxes extends FormwerkElement {
         this.input.classList.add("form-check-input");
         this.drawOptions();
         this.classList.add("formwerk");
-        this._syncAttributes();
     }
     _addHtml() {
         const label = this.getAttribute("label");
@@ -247,15 +272,13 @@ export class FormwerkCheckboxes extends FormwerkElement {
         if (!id) {
             throw new Error("Missing name or id property");
         }
+        this.input.id = id;
         this.innerHTML =
             `<div class="formwerk--outer">` +
                 (label ? `<div id="${_html(id)}--label" class="form-label">${_html(label)}</div>` : "") +
                 `<div class="form-check-group" role="group" id="${_html(id)}--input" aria-labelledby="${_html(id)}--label"${helptext ? ` aria-describedby="${_html(id)}--helptext"` : ""}></div>` +
                 `</div>` +
                 (helptext ? `<small id="${_html(id)}--helptext" class="form-text">${_html(helptext)}</small>` : "");
-    }
-    _syncAttributes() {
-        this.classList.toggle("is-required", this.input.hasAttribute("required"));
     }
     drawOptions() {
         if (!this.formGroup) {
@@ -270,7 +293,7 @@ export class FormwerkCheckboxes extends FormwerkElement {
                 };
             }
             const input = this.input.cloneNode(true);
-            const id = input.id + `--${index}`;
+            const id = this.input.id + `--${index}`;
             const checked = this._values.indexOf(option.value) !== -1 || this.input.value === option.value;
             input.setAttribute("value", option.value);
             input.setAttribute("id", id);
@@ -282,6 +305,10 @@ export class FormwerkCheckboxes extends FormwerkElement {
 }
 customElements.define("formwerk-checkboxes", FormwerkCheckboxes);
 // -----------------------------------------------------------------------------
+/**
+ * Creates an enhanced `<textarea>`
+ * @see https://developer.mozilla.org/en-US/docs/Web/HTML/Element/textarea
+ */
 export class FormwerkTextarea extends FormwerkInput {
     connectedCallback() {
         super.connectedCallback();

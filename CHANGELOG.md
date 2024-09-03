@@ -1,5 +1,12 @@
 # Changelog
 
+- Added `disabled` and `required` component property
+- Fixed `id` of checkboxes / radio buttons
+
+## 1.0.4
+
+- Improved & fixed documentation
+
 ## 1.0.3
 
 - Moved as much as possible to `connectedCallback`

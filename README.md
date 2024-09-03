@@ -2,11 +2,27 @@
 
 Web components for improved HTML form elements.
 
+```html
+<!-- Turn this... -->
+
+<div class="formwerk--outer">
+  <label for="example--input" class="form-label">Example</label>
+  <div class="formwerk--input">
+    <input id="example--input" type="text" aria-describedby="example--helptext" name="example" class="form-control" />
+  </div>
+</div>
+<small id="example--helptext" class="form-text"> This is an example text field </small>
+
+<!-- ...into this -->
+
+<formwerk-input label="Example" name="example" helptext="This is an example text field"></formwerk-input>
+```
+
 These web components exist:
 
 1. `<formwerk-input />` enhances [`<input />`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input)
 2. `<formwerk-select />` enhances [`<select />`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/select)
-3. `<formwerk-checkboxes />` enhances [`<input type="chechbox" />` & `<input type="radio" />`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input)
+3. `<formwerk-checkboxes />` enhances [`<input type="checkbox" />` & `<input type="radio" />`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input)
 4. `<formwerk-textarea />` enhances [`<textarea />`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/textarea)
 
 All components have in common that any attributes attached will be attached to the `<input>` and/or `<select>` field inside of it. And then there are some extra attributes to make your live easier.
@@ -16,14 +32,14 @@ All components have in common that any attributes attached will be attached to t
 Either download the [`formwerk.js`](dist/formwerk.js) and [`formwerk.css`](dist/formwerk.css) to a sensible location in your web project, or do a NPM installation:
 
 ```bash
-npm install formwerk --save
+npm install @fboes/formwerk --save
 ```
 
 Instead of a local installation you may also load the library from https://unpkg.com/. Beware: This makes https://unpkg.com/ a dependency of your project and may pose data protection issues.
 
 ```html
-<script type="module" src="https://unpkg.com/formwerk@latest/dist/formwerk.js"></script>
-<link rel="stylesheet" href="https://unpkg.com/formwerk@latest/dist/formwerk.css" />
+<script type="module" src="https://unpkg.com/@fboes/formwerk@latest/dist/formwerk.js"></script>
+<link rel="stylesheet" href="https://unpkg.com/@fboes/formwerk@latest/dist/formwerk.css" />
 ```
 
 Everything required for the front-end functionality of this web component is contained in [`formwerk.js`](./dist/formwerk.js)and [`formwerk.css`](dist/formwerk.css).
@@ -79,6 +95,18 @@ Will spawn an extra `<output>` after the form element, if set to `true`. This ou
 Exists on: `<formwerk-input />`, `<formwerk-select />`
 
 Will spawn an extra extra unit name (e.g. "°C") text after the form element, the attribute value will be the unit text.
+
+### `required` (boolean)
+
+Exists on: `<formwerk-input />`, `<formwerk-select />`, `<formwerk-checkboxes />`, `<formwerk-textarea />`
+
+Will toggle the input element's attribute `required` and add/remove the class `is-required`.
+
+### `disabled` (boolean)
+
+Exists on: `<formwerk-input />`, `<formwerk-select />`, `<formwerk-checkboxes />`, `<formwerk-textarea />`
+
+Will toggle the input element's attribute `disabled` and add/remove the class `is-disabled`.
 
 ### `options` (string[]\|object[])
 
@@ -136,6 +164,20 @@ This allows `<input>` field to change their type. The attribute requires the fol
 Exists on: `<formwerk-textarea />`
 
 Text areas will grow according to their input text size.
+
+## Classes
+
+```css
+.formwerk.is-required {
+  /* This web component has a required input element */
+}
+.formwerk.is-disabled {
+  /* This web component has a disabled input element */
+}
+.formwerk.is-invalid {
+  /* This web component has an invalid input element value */
+}
+```
 
 ## Status
 
