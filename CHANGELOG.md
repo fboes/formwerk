@@ -1,5 +1,9 @@
 # Changelog
 
+- Improved attribute handling for `disabled`, `required`, `options` and `values`
+
+## 1.1.0
+
 - Added `disabled` and `required` component property
 - Fixed `id` of checkboxes / radio buttons
 

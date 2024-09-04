@@ -29,14 +29,20 @@ export class FormwerkElement extends HTMLElement {
         this._options = [];
         this.input = document.createElement("input");
     }
-    connectedCallback() {
-        this.disabled = this.hasAttribute("disabled");
-        this.required = this.hasAttribute("required");
-        const options = this.getAttribute("options");
-        const values = this.getAttribute("values");
-        if (options || values) {
-            this.options = JSON.parse(options ?? "[]");
-            this.values = JSON.parse(values ?? "[]");
+    attributeChangedCallback(attrName, oldValue, newValue) {
+        switch (attrName) {
+            case "disabled":
+                this.disabled = Boolean(newValue);
+                break;
+            case "required":
+                this.required = Boolean(newValue);
+                break;
+            case "options":
+                this.options = JSON.parse(newValue ?? "[]");
+                break;
+            case "values":
+                this.values = JSON.parse(newValue ?? "[]");
+                break;
         }
     }
     set options(options) {
@@ -68,6 +74,7 @@ export class FormwerkElement extends HTMLElement {
         this.classList.toggle("is-disabled", disabled);
     }
 }
+FormwerkElement.observedAttributes = ["disabled", "required", "options", "values"];
 // -----------------------------------------------------------------------------
 /**
  * Creates an enhanced `<input>`
@@ -79,7 +86,6 @@ export class FormwerkInput extends FormwerkElement {
         this.output = null;
     }
     connectedCallback() {
-        super.connectedCallback();
         this._addHtml();
         this.input = this.querySelector("input, select, textarea");
         this.output = this.querySelector("output");
@@ -241,7 +247,6 @@ export class FormwerkCheckboxes extends FormwerkElement {
         this.formGroup = null;
     }
     connectedCallback() {
-        super.connectedCallback();
         this._addHtml();
         this.formGroup = this.querySelector('[role="group"]');
         if (this.hasAttributes()) {

@@ -60,17 +60,24 @@ export class FormwerkElement extends HTMLElement {
   protected _values: FormwerkValue[] = [];
   protected _options: FormwerkOption[] = [];
 
+  static observedAttributes = ["disabled", "required", "options", "values"];
+
   input: HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement = document.createElement("input");
 
-  connectedCallback() {
-    this.disabled = this.hasAttribute("disabled");
-    this.required = this.hasAttribute("required");
-
-    const options = this.getAttribute("options");
-    const values = this.getAttribute("values");
-    if (options || values) {
-      this.options = JSON.parse(options ?? "[]");
-      this.values = JSON.parse(values ?? "[]");
+  attributeChangedCallback(attrName: string, oldValue: string | null, newValue: string | null) {
+    switch (attrName) {
+      case "disabled":
+        this.disabled = Boolean(newValue);
+        break;
+      case "required":
+        this.required = Boolean(newValue);
+        break;
+      case "options":
+        this.options = JSON.parse(newValue ?? "[]");
+        break;
+      case "values":
+        this.values = JSON.parse(newValue ?? "[]");
+        break;
     }
   }
 
@@ -119,7 +126,6 @@ export class FormwerkInput extends FormwerkElement {
   output: HTMLOutputElement | null = null;
 
   connectedCallback() {
-    super.connectedCallback();
     this._addHtml();
     this.input = this.querySelector("input, select, textarea") as
       | HTMLInputElement
@@ -308,7 +314,6 @@ export class FormwerkCheckboxes extends FormwerkElement {
   formGroup: HTMLDivElement | null = null;
 
   connectedCallback() {
-    super.connectedCallback();
     this._addHtml();
     this.formGroup = this.querySelector('[role="group"]') as HTMLDivElement;
 

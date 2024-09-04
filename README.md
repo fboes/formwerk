@@ -25,7 +25,7 @@ These web components exist:
 3. `<formwerk-checkboxes />` enhances [`<input type="checkbox" />` & `<input type="radio" />`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input)
 4. `<formwerk-textarea />` enhances [`<textarea />`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/textarea)
 
-All components have in common that any attributes attached will be attached to the `<input>` and/or `<select>` field inside of it. And then there are some extra attributes to make your live easier.
+All components have in common that any attributes attached will be attached to the `<input>`, `<select>` or `<textarea>` field inside of it. There are some additional attributes which will not be attached to the form field elements, but instead will make your live easier by attaching extra DOM structures around the form field element.
 
 ## Installation
 
@@ -66,51 +66,50 @@ Write the Formwerk web components tags into your HTML.
 
 Refer to the [Formwerk examples page](https://fboes.github.io/formwerk/example/) on live examples as well as their code examples.
 
-Be aware that changing the attributes of the web components after mounting these to the DOM does not apply any further changes. Instead change the _properties_ of the web components.
+Be aware that changing the attributes of the web components after mounting these to the DOM does most often not apply any further changes. Instead change the _properties_ of the web components.
 
 ## Attributes
 
 These additional attributes exists on the Formwerk web components:
 
-### `label` (string)
+| Name         | Type               | Property | `<formwerk-input />` | `<formwerk-select />` | `<formwerk-checkboxes />` | `<formwerk-textarea />` |
+| ------------ | ------------------ | :------: | :------------------: | :-------------------: | :-----------------------: | :---------------------: |
+| `label`      | string             |          |          ✅          |          ✅           |            ✅             |           ✅            |
+| `helptext`   | string             |          |          ✅          |          ✅           |            ✅             |           ✅            |
+| `output`     | boolean            |          |          ✅          |          ✅           |                           |                         |
+| `unit`       | string             |          |          ✅          |          ✅           |                           |                         |
+| `required`   | boolean            |    ✅    |          ✅          |          ✅           |            ✅             |           ✅            |
+| `disabled`   | boolean            |    ✅    |          ✅          |          ✅           |            ✅             |           ✅            |
+| `options`    | string[]\|object[] |    ✅    |          ✅          |          ✅           |            ✅             |                         |
+| `values`     | string[]           |    ✅    |          ✅          |          ✅           |            ✅             |                         |
+| `toggletype` | object             |          |          ✅          |                       |                           |                         |
+| `autogrow`   | boolean            |          |                      |                       |                           |           ✅            |
 
-Exists on: `<formwerk-input />`, `<formwerk-select />`, `<formwerk-checkboxes />`, `<formwerk-textarea />`
+### `label`
 
 Will spawn an extra `<label>` before the form element, the attribute value will be the label text.
 
-### `helptext` (string)
-
-Exists on: `<formwerk-input />`, `<formwerk-select />`, `<formwerk-checkboxes />`, `<formwerk-textarea />`
+### `helptext`
 
 Will spawn an extra help paragraph text after the form element, the attribute value will be the paragraph text.
 
-### `output` (boolean)
-
-Exists on: `<formwerk-input />`, `<formwerk-select />`
+### `output`
 
 Will spawn an extra `<output>` after the form element, if set to `true`. This output show the current value, and may be helpful for inputs which do not show the current value like `<input type="range" />`.
 
-### `unit` (string)
-
-Exists on: `<formwerk-input />`, `<formwerk-select />`
+### `unit`
 
 Will spawn an extra extra unit name (e.g. "°C") text after the form element, the attribute value will be the unit text.
 
-### `required` (boolean)
-
-Exists on: `<formwerk-input />`, `<formwerk-select />`, `<formwerk-checkboxes />`, `<formwerk-textarea />`
+### `required`
 
 Will toggle the input element's attribute `required` and add/remove the class `is-required`.
 
-### `disabled` (boolean)
-
-Exists on: `<formwerk-input />`, `<formwerk-select />`, `<formwerk-checkboxes />`, `<formwerk-textarea />`
+### `disabled`
 
 Will toggle the input element's attribute `disabled` and add/remove the class `is-disabled`.
 
-### `options` (string[]\|object[])
-
-Exists on: `<formwerk-input />`, `<formwerk-select />`, `<formwerk-checkboxes />`
+### `options`
 
 Instead of creating multiple options for a `<datalist>`, `<option>`, `<input type="checkbox">` or `<input type="radio">`, the `options` property allows for a fast creation of option lists.
 
@@ -132,9 +131,7 @@ If you are in need of having values and labels of a options behave differently, 
 ]
 ```
 
-### `values` (string[])
-
-Exists on: `<formwerk-input />`, `<formwerk-select />`, `<formwerk-checkboxes />`
+### `values`
 
 For `<select multiple />` as well as `<input type="checkbox" />` it is possible to have multiple selected values for a given input element. For these elements there is a helpful `values` property to set and read multiple `value`.
 
@@ -144,9 +141,7 @@ This is available as attribute and element property.
 ["One", "Two", "Three"]
 ```
 
-### `toggletype` (object)
-
-Exists on: `<formwerk-input />`
+### `toggletype`
 
 This allows `<input>` field to change their type. The attribute requires the following JSON:
 
@@ -159,9 +154,7 @@ This allows `<input>` field to change their type. The attribute requires the fol
 }
 ```
 
-### `autogrow` (boolean)
-
-Exists on: `<formwerk-textarea />`
+### `autogrow`
 
 Text areas will grow according to their input text size.
 
