@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.1.2
+
+- Prevent `class` from being attached to inner form field element
+- Improved attribute handling for `autofocus`, adding example
+
+## 1.1.1
+
 - Improved attribute handling for `disabled`, `required`, `options` and `values`
 
 ## 1.1.0

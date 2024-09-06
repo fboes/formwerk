@@ -19,7 +19,7 @@
 .formwerk .form-text {
   display: block;
   margin-block-start: 0.5em;
-  opacity: 0.66;
+  opacity: 0.66; /* Accessibility */
 }
 .formwerk output {
   min-width: 2em;
@@ -39,11 +39,11 @@
 .formwerk.is-required .form-label:after {
   content: "*";
 }
-.formwerk.is-disabled {
-  opacity: 0.5;
+.formwerk.is-disabled .formwerk--outer > * {
+  opacity: 0.55; /* Accessibility */
   cursor: not-allowed;
 }
 .formwerk.is-invalid .formwerk--outer {
   border-color: rgba(255, 0, 0, 0.5);
-  background-color: rgba(255, 0, 0, 0.1);
+  background-color: rgba(255, 0, 0, 0.2);
 }

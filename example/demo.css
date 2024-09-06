@@ -10,6 +10,9 @@ h1 {
 h2 {
   margin-top: 2em;
 }
+a {
+  color: #007aff;
+}
 section {
   display: flex;
   flex-wrap: wrap;
@@ -23,6 +26,7 @@ section > * {
   padding: 0.5em;
   border-radius: 0.25em;
   border: 1px solid rgba(0, 0, 0, 0.25);
+  background-color: rgba(0, 0, 20, 0.01);
 }
 textarea,
 input,
@@ -51,5 +55,6 @@ select {
   }
   .formwerk--outer {
     border: 1px solid rgba(255, 255, 255, 0.25);
+    background-color: rgba(255, 255, 255, 0.1);
   }
 }

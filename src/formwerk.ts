@@ -145,6 +145,10 @@ export class FormwerkInput extends FormwerkElement {
           case "toggletype":
           case "options":
           case "values":
+          case "class":
+            break;
+          case "autofocus":
+            this.input.focus();
             break;
           case "value":
             this.input.value = attribute.value;
@@ -325,6 +329,8 @@ export class FormwerkCheckboxes extends FormwerkElement {
           case "options":
           case "required":
           case "values":
+          case "class":
+          case "autofocus":
             break;
           case "value":
             this.input.value = attribute.value;

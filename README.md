@@ -18,6 +18,8 @@ Web components for improved HTML form elements.
 <formwerk-input label="Example" name="example" helptext="This is an example text field"></formwerk-input>
 ```
 
+Refer to the [Formwerk examples page](https://fboes.github.io/formwerk/example/) on live examples as well as their code examples.
+
 These web components exist:
 
 1. `<formwerk-input />` enhances [`<input />`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input)
