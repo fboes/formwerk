@@ -6,3 +6,12 @@
 /tmp/*
 !/tmp/.gitkeep
 *.tgz
+
+# --------
+
+example
+src
+tsconfig.json
+.*
+eslint*
+*.test.*
