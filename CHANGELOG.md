@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.1.3
+
+- Removed unnecessary files fro NPM package
+- Improved handling of `id` by removing illegal characters
+- Added `value` property, which will give a typed value with `string`, `number`, `Date`, `string[]` nor `null`
+
 ## 1.1.2
 
 - Prevent `class` from being attached to inner form field element

@@ -73,6 +73,42 @@ export class FormwerkElement extends HTMLElement {
         this.input.toggleAttribute("disabled", disabled);
         this.classList.toggle("is-disabled", disabled);
     }
+    /**
+     * @returns If there is no explicit ID, will use the `name` attribute to supply an ID
+     */
+    get id() {
+        const id = this.getAttribute("id") ?? this.getAttribute("name");
+        if (!id) {
+            throw new Error("No name or id given");
+        }
+        return id.replace(/[^A-Za-z0-9_-]/g, "");
+    }
+    /**
+     * @returns Depending on the type of the input field, it may yield a differently typed output
+     */
+    get value() {
+        if (!(this.input instanceof HTMLInputElement)) {
+            return this.hasAttribute("multiple") ? this.values : this.input.value;
+        }
+        switch (this.getAttribute("type")) {
+            case "number":
+            case "range":
+                return this.input.valueAsNumber;
+            case "date":
+            case "datetime-local":
+                return this.input.valueAsDate;
+            case "checkbox":
+                return this.values;
+            default:
+                return this.input.value;
+        }
+    }
+    toJSON() {
+        return {
+            id: this.id,
+            value: this.value,
+        };
+    }
 }
 FormwerkElement.observedAttributes = ["disabled", "required", "options", "values"];
 // -----------------------------------------------------------------------------
@@ -150,10 +186,7 @@ export class FormwerkInput extends FormwerkElement {
         const datalist = this.getAttribute("options");
         const toggletypeAttribute = this.getAttribute("toggletype");
         const toggletype = toggletypeAttribute ? JSON.parse(toggletypeAttribute) : null;
-        const id = this.getAttribute("id") ?? this.getAttribute("name");
-        if (!id) {
-            throw new Error("Missing name or id property");
-        }
+        const id = this.id;
         this.innerHTML =
             `<div class="formwerk--outer">` +
                 (label ? `<label for="${_html(id)}--input" class="form-label">${_html(label)}</label>` : "") +
@@ -209,10 +242,7 @@ export class FormwerkSelect extends FormwerkInput {
         const output = this.getAttribute("output");
         const unit = this.getAttribute("unit");
         const helptext = this.getAttribute("helptext");
-        const id = this.getAttribute("id") ?? this.getAttribute("name");
-        if (!id) {
-            throw new Error("Missing name or id property");
-        }
+        const id = this.id;
         this.innerHTML =
             `<div class="formwerk--outer">` +
                 (label ? `<label for="${_html(id)}--input" class="form-label">${_html(label)}</label>` : "") +
@@ -279,10 +309,7 @@ export class FormwerkCheckboxes extends FormwerkElement {
     _addHtml() {
         const label = this.getAttribute("label");
         const helptext = this.getAttribute("helptext");
-        const id = this.getAttribute("id") ?? this.getAttribute("name");
-        if (!id) {
-            throw new Error("Missing name or id property");
-        }
+        const id = this.id;
         this.input.id = id;
         this.innerHTML =
             `<div class="formwerk--outer">` +
@@ -341,10 +368,7 @@ export class FormwerkTextarea extends FormwerkInput {
         const output = this.getAttribute("output");
         const unit = this.getAttribute("unit");
         const helptext = this.getAttribute("helptext");
-        const id = this.getAttribute("id") ?? this.getAttribute("name");
-        if (!id) {
-            throw new Error("Missing name or id property");
-        }
+        const id = this.id;
         this.innerHTML =
             `<div class="formwerk--outer">` +
                 (label ? `<label for="${_html(id)}--input" class="form-label">${_html(label)}</label>` : "") +

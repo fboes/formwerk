@@ -3,6 +3,10 @@
  */
 type FormwerkValue = string;
 /**
+ * Depending on the type of the input field, it may yield a differently typed output
+ */
+type FormwerkOutputValue = string | number | Date | string[] | null;
+/**
  * A single option for a `<datalist>`, `<option>`, `<input type="checkbox">` or `<input type="radio">
  */
 type FormwerkOption = string | {
@@ -24,6 +28,18 @@ export declare class FormwerkElement extends HTMLElement {
     get values(): FormwerkValue[];
     set required(required: boolean);
     set disabled(disabled: boolean);
+    /**
+     * @returns If there is no explicit ID, will use the `name` attribute to supply an ID
+     */
+    get id(): string;
+    /**
+     * @returns Depending on the type of the input field, it may yield a differently typed output
+     */
+    get value(): FormwerkOutputValue;
+    toJSON(): {
+        id: string;
+        value: FormwerkOutputValue;
+    };
 }
 /**
  * Creates an enhanced `<input>`
