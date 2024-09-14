@@ -109,6 +109,23 @@ export class FormwerkElement extends HTMLElement {
             value: this.value,
         };
     }
+    _getHtmlOutput() {
+        if (!this.getAttribute("output")) {
+            return "";
+        }
+        const id = this.id;
+        const form = this.getAttribute("form");
+        const name = this.getAttribute("name");
+        return `<output id="${_html(id)}--output"${name ? ` name="${_html(name)}--output"` : ""} for="${_html(id)}--input"${form ? ` form="${_html(form)}"` : ""}></output>`;
+    }
+    _getHtmlLabel() {
+        const label = this.getAttribute("label");
+        if (!label) {
+            return "";
+        }
+        const id = this.id;
+        return `<label for="${_html(id)}--input" class="form-label">${_html(label)}</label>`;
+    }
 }
 FormwerkElement.observedAttributes = ["disabled", "required", "options", "values"];
 // -----------------------------------------------------------------------------
@@ -180,7 +197,6 @@ export class FormwerkInput extends FormwerkElement {
     }
     _addHtml() {
         const label = this.getAttribute("label");
-        const output = this.getAttribute("output");
         const unit = this.getAttribute("unit");
         const helptext = this.getAttribute("helptext");
         const datalist = this.getAttribute("options");
@@ -189,11 +205,11 @@ export class FormwerkInput extends FormwerkElement {
         const id = this.id;
         this.innerHTML =
             `<div class="formwerk--outer">` +
-                (label ? `<label for="${_html(id)}--input" class="form-label">${_html(label)}</label>` : "") +
+                this._getHtmlLabel() +
                 `<div class="formwerk--input"><input id="${_html(id)}--input" type="text"${(helptext ? ` aria-describedby="${_html(id)}--helptext"` : "") +
                     (datalist ? ` list="${_html(id)}--datalist"` : "") +
                     (unit ? ` aria-label="${_html(label ?? "")} (${_html(unit)})"` : "")} />` +
-                (output ? `<output id="${_html(id)}--input"></output>` : "") +
+                this._getHtmlOutput() +
                 (unit ? `<span aria-hidden="true">${_html(unit)}</span>` : "") +
                 (toggletype
                     ? `<button type="button" class="toggle-type" title="${_html(toggletype.title ?? "")}">${_html(toggletype.labelOff)}</button>`
@@ -239,16 +255,15 @@ customElements.define("formwerk-input", FormwerkInput);
 export class FormwerkSelect extends FormwerkInput {
     _addHtml() {
         const label = this.getAttribute("label");
-        const output = this.getAttribute("output");
         const unit = this.getAttribute("unit");
         const helptext = this.getAttribute("helptext");
         const id = this.id;
         this.innerHTML =
             `<div class="formwerk--outer">` +
-                (label ? `<label for="${_html(id)}--input" class="form-label">${_html(label)}</label>` : "") +
+                this._getHtmlLabel() +
                 `<div class="formwerk--input"><select id="${_html(id)}--input"${(helptext ? ` aria-describedby="${_html(id)}--helptext"` : "") +
                     (unit ? ` aria-label="${_html(label ?? "")} (${_html(unit)})"` : "")}></select>` +
-                (output ? `<output id="${_html(id)}--input"></output>` : "") +
+                this._getHtmlOutput() +
                 (unit ? `<span aria-hidden="true">${_html(unit)}</span>` : "") +
                 `</div>` +
                 `</div>` +
@@ -365,16 +380,15 @@ export class FormwerkTextarea extends FormwerkInput {
     }
     _addHtml() {
         const label = this.getAttribute("label");
-        const output = this.getAttribute("output");
         const unit = this.getAttribute("unit");
         const helptext = this.getAttribute("helptext");
         const id = this.id;
         this.innerHTML =
             `<div class="formwerk--outer">` +
-                (label ? `<label for="${_html(id)}--input" class="form-label">${_html(label)}</label>` : "") +
+                this._getHtmlLabel() +
                 `<div class="formwerk--input"><textarea id="${_html(id)}--input" ${(helptext ? ` aria-describedby="${_html(id)}--helptext"` : "") +
                     (unit ? ` aria-label="${_html(label ?? "")} (${_html(unit)})"` : "")}></textarea>` +
-                (output ? `<output id="${_html(id)}--input"></output>` : "") +
+                this._getHtmlOutput() +
                 (unit ? `<span aria-hidden="true">${_html(unit)}</span>` : "") +
                 `</div>` +
                 `</div>` +

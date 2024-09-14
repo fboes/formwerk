@@ -1,5 +1,7 @@
 # Changelog
 
+- Improved `<output>` element
+
 ## 1.1.3
 
 - Removed unnecessary files fro NPM package

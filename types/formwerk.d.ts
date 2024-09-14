@@ -40,6 +40,8 @@ export declare class FormwerkElement extends HTMLElement {
         id: string;
         value: FormwerkOutputValue;
     };
+    protected _getHtmlOutput(): string;
+    protected _getHtmlLabel(): string;
 }
 /**
  * Creates an enhanced `<input>`
