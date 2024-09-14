@@ -4,7 +4,7 @@
 
 ## 1.1.3
 
-- Removed unnecessary files fro NPM package
+- Removed unnecessary files from NPM package
 - Improved handling of `id` by removing illegal characters
 - Added `value` property, which will give a typed value with `string`, `number`, `Date`, `string[]` nor `null`
 
