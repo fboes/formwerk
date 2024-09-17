@@ -34,6 +34,9 @@ export class FormwerkElement extends HTMLElement {
             case "disabled":
                 this.disabled = Boolean(newValue);
                 break;
+            case "readonly":
+                this.readonly = Boolean(newValue);
+                break;
             case "required":
                 this.required = Boolean(newValue);
                 break;
@@ -72,6 +75,10 @@ export class FormwerkElement extends HTMLElement {
     set disabled(disabled) {
         this.input.toggleAttribute("disabled", disabled);
         this.classList.toggle("is-disabled", disabled);
+    }
+    set readonly(readonly) {
+        this.input.toggleAttribute("readonly", readonly);
+        this.classList.toggle("is-readonly", readonly);
     }
     /**
      * @returns If there is no explicit ID, will use the `name` attribute to supply an ID
@@ -127,7 +134,7 @@ export class FormwerkElement extends HTMLElement {
         return `<label for="${_html(id)}--input" class="form-label">${_html(label)}</label>`;
     }
 }
-FormwerkElement.observedAttributes = ["disabled", "required", "options", "values"];
+FormwerkElement.observedAttributes = ["disabled", "readonly", "required", "options", "values"];
 // -----------------------------------------------------------------------------
 /**
  * Creates an enhanced `<input>`

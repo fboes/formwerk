@@ -28,6 +28,7 @@ export declare class FormwerkElement extends HTMLElement {
     get values(): FormwerkValue[];
     set required(required: boolean);
     set disabled(disabled: boolean);
+    set readonly(readonly: boolean);
     /**
      * @returns If there is no explicit ID, will use the `name` attribute to supply an ID
      */

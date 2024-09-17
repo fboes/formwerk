@@ -1,5 +1,9 @@
 # Changelog
 
+- Improved support for `readonly` attribute
+
+## 1.1.4
+
 - Improved `<output>` element
 
 ## 1.1.3

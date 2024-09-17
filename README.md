@@ -82,6 +82,7 @@ These additional attributes exists on the Formwerk web components:
 | `unit`       | string             |          |          ✅          |          ✅           |                           |                         |
 | `required`   | boolean            |    ✅    |          ✅          |          ✅           |            ✅             |           ✅            |
 | `disabled`   | boolean            |    ✅    |          ✅          |          ✅           |            ✅             |           ✅            |
+| `readonly`   | boolean            |    ✅    |          ✅          |          ✅           |            ✅             |           ✅            |
 | `options`    | string[]\|object[] |    ✅    |          ✅          |          ✅           |            ✅             |                         |
 | `values`     | string[]           |    ✅    |          ✅          |          ✅           |            ✅             |                         |
 | `toggletype` | object             |          |          ✅          |                       |                           |                         |
@@ -110,6 +111,10 @@ Will toggle the input element's attribute `required` and add/remove the class `i
 ### `disabled`
 
 Will toggle the input element's attribute `disabled` and add/remove the class `is-disabled`.
+
+### `readonly`
+
+Will toggle the input element's attribute `readonly` and add/remove the class `is-readonly`.
 
 ### `options`
 

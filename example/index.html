@@ -160,6 +160,14 @@
           disabled="disabled"
           helptext="This is an disabled text field"
         ></formwerk-input>
+
+        <formwerk-input
+          label="Readonly"
+          name="readonly"
+          readonly="readonly"
+          helptext="This is an readonly text field"
+          value="I cannot be changed"
+        ></formwerk-input>
       </section>
 
       <h3>…with <code>`options`</code></h3>
@@ -308,6 +316,14 @@
           value="Lorem ipsum…"
           disabled="disabled"
           helptext="A disabled textarea"
+        ></formwerk-textarea>
+
+        <formwerk-textarea
+          label="Textarea"
+          name="textarea-readonly"
+          value="Lorem ipsum…"
+          readonly="readonly"
+          helptext="A readonly textarea"
         ></formwerk-textarea>
       </section>
     </form>

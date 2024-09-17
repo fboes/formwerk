@@ -65,7 +65,7 @@ export class FormwerkElement extends HTMLElement {
   protected _values: FormwerkValue[] = [];
   protected _options: FormwerkOption[] = [];
 
-  static observedAttributes = ["disabled", "required", "options", "values"];
+  static observedAttributes = ["disabled", "readonly", "required", "options", "values"];
 
   input: HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement = document.createElement("input");
 
@@ -73,6 +73,9 @@ export class FormwerkElement extends HTMLElement {
     switch (attrName) {
       case "disabled":
         this.disabled = Boolean(newValue);
+        break;
+      case "readonly":
+        this.readonly = Boolean(newValue);
         break;
       case "required":
         this.required = Boolean(newValue);
@@ -118,6 +121,11 @@ export class FormwerkElement extends HTMLElement {
   set disabled(disabled: boolean) {
     this.input.toggleAttribute("disabled", disabled);
     this.classList.toggle("is-disabled", disabled);
+  }
+
+  set readonly(readonly: boolean) {
+    this.input.toggleAttribute("readonly", readonly);
+    this.classList.toggle("is-readonly", readonly);
   }
 
   /**

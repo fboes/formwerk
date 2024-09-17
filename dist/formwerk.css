@@ -41,7 +41,9 @@
 }
 .formwerk.is-disabled .formwerk--outer > * {
   opacity: 0.55; /* Accessibility */
-  cursor: not-allowed;
+}
+.formwerk.is-readonly .formwerk--outer {
+  background: #eee;
 }
 .formwerk.is-invalid .formwerk--outer {
   border-color: rgba(255, 0, 0, 0.5);
