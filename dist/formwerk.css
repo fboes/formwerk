@@ -16,6 +16,10 @@
 .formwerk .form-label {
   margin-block-end: 0.5em;
 }
+.formwerk legend.form-label {
+  float: inline-start;
+  width: 100%;
+}
 .formwerk .form-text {
   display: block;
   margin-block-start: 0.5em;
@@ -43,7 +47,7 @@
   opacity: 0.55; /* Accessibility */
 }
 .formwerk.is-readonly .formwerk--outer {
-  background: #eee;
+  background: rgba(0, 0, 0, 0.1);
 }
 .formwerk.is-invalid .formwerk--outer {
   border-color: rgba(255, 0, 0, 0.5);

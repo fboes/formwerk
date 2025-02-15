@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.1.5
+
+- Improved accessibility
 - Improved support for `readonly` attribute
 
 ## 1.1.4

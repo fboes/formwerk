@@ -423,12 +423,12 @@ export class FormwerkCheckboxes extends FormwerkElement {
 
     this.input.id = id;
     this.innerHTML =
-      `<div class="formwerk--outer">` +
-      (label ? `<div id="${_html(id)}--label" class="form-label">${_html(label)}</div>` : "") +
+      `<fieldset class="formwerk--outer">` +
+      (label ? `<legend id="${_html(id)}--label" class="form-label">${_html(label)}</legend>` : "") +
       `<div class="form-check-group" role="group" id="${_html(id)}--input" aria-labelledby="${_html(id)}--label"${
         helptext ? ` aria-describedby="${_html(id)}--helptext"` : ""
       }></div>` +
-      `</div>` +
+      `</fieldset>` +
       (helptext ? `<small id="${_html(id)}--helptext" class="form-text">${_html(helptext)}</small>` : "");
   }
 
