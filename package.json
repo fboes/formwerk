@@ -2,10 +2,10 @@
   "name": "@fboes/formwerk",
   "version": "1.1.5",
   "description": "Web components for improved HTML form elements.",
-  "main": "dist/formwerk.js",
+  "main": "dist/index.js",
   "scripts": {
-    "test": "node ./dist/formwerk.test.js",
-    "start": "node ./dist/formwerk.js",
+    "test": "node ./dist/index.test.js",
+    "start": "node ./dist/index.js",
     "prettier": "npx prettier --cache --write .",
     "eslint": "npx eslint **/*.ts --fix",
     "tsc": "npx tsc --build",

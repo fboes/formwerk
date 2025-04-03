@@ -1,0 +1,1 @@
+{"version":3,"file":"FormwerkInput.d.ts","sourceRoot":"","sources":["../src/FormwerkInput.ts"],"names":[],"mappings":"AAAA,OAAO,EAAS,eAAe,EAAsC,MAAM,sBAAsB,CAAC;AAGlG;;;GAGG;AAEH,qBAAa,aAAc,SAAQ,eAAe;IAChD,MAAM,EAAE,iBAAiB,GAAG,IAAI,CAAQ;IAExC,iBAAiB;IAoDjB,SAAS,CAAC,gBAAgB;IAe1B,SAAS,CAAC,QAAQ;IA4BlB,SAAS,CAAC,WAAW;IAMrB,SAAS,CAAC,aAAa;IAKvB,WAAW;CAiBZ"}

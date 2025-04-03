@@ -1,0 +1,1 @@
+{"version":3,"file":"FormwerkCheckboxes.d.ts","sourceRoot":"","sources":["../../src/components/FormwerkCheckboxes.ts"],"names":[],"mappings":"AAAA,OAAO,EAAS,eAAe,EAAkB,MAAM,sBAAsB,CAAC;AAE9E;;;GAGG;AAEH,qBAAa,kBAAmB,SAAQ,eAAe;IACrD,SAAS,EAAE,cAAc,GAAG,IAAI,CAAQ;IAExC,iBAAiB;IA8BjB,SAAS,CAAC,QAAQ;IAclB,WAAW;CAyBZ"}

@@ -31,7 +31,7 @@ All components have in common that any attributes attached will be attached to t
 
 ## Installation
 
-Either download the [`formwerk.js`](dist/formwerk.js) and [`formwerk.css`](dist/formwerk.css) to a sensible location in your web project, or do a NPM installation:
+Either download the [`index.js`](dist/index.js) and [`formwerk.css`](dist/formwerk.css) to a sensible location in your web project, or do a NPM installation:
 
 ```bash
 npm install @fboes/formwerk --save
@@ -40,18 +40,18 @@ npm install @fboes/formwerk --save
 Instead of a local installation you may also load the library from https://unpkg.com/. Beware: This makes https://unpkg.com/ a dependency of your project and may pose data protection issues.
 
 ```html
-<script type="module" src="https://unpkg.com/@fboes/formwerk@latest/dist/formwerk.js"></script>
+<script type="module" src="https://unpkg.com/@fboes/formwerk@latest/dist/index.js"></script>
 <link rel="stylesheet" href="https://unpkg.com/@fboes/formwerk@latest/dist/formwerk.css" />
 ```
 
-Everything required for the front-end functionality of this web component is contained in [`formwerk.js`](./dist/formwerk.js)and [`formwerk.css`](dist/formwerk.css).
+Everything required for the front-end functionality of this web component is contained in [`index.js`](./dist/index.js)and [`formwerk.css`](dist/formwerk.css).
 
 ## Usage
 
-Load the JavaScript file [`formwerk.js`](dist/formwerk.js) into your HTML document to enable the Formwerk web components.
+Load the JavaScript file [`index.js`](dist/index.js) into your HTML document to enable the Formwerk web components.
 
 ```html
-<script type="module" src="formwerk.js"></script>
+<script type="module" src="index.js"></script>
 ```
 
 Optional: Load additional [`formwerk.css`](dist/formwerk.css) style sheet for some basic styling of the Formwerk web components.
